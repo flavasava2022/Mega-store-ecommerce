@@ -1,0 +1,121 @@
+.overlay-cart {
+    transition: .3s ease !important;
+}
+.quick-view-btn{
+    transition: .5s ease !important;
+}
+.addToCart-btn{
+        transition: .3s ease !important;
+}
+
+.main-container:hover .overlay-cart {
+background: rgba(255, 255, 255, 0.2);
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    opacity: 1;
+    z-index: 10 !important;
+
+}
+.main-container:hover .wishList {
+left:20px !important;
+    transition: .3s ease !important;
+
+}
+.main-container:hover .btns-container {
+    bottom: 2% !important;
+    transition: .3s ease !important;
+
+}
+.wishList{
+    background: #6895D2;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        opacity: 1;
+        z-index: 10 !important;
+}
+
+.quick-view-btn:hover .quick-view-btn-logo{
+opacity: 1;
+
+}
+
+.addToCart-btn:hover .addToCart-btn-logo {
+    transition: .3s ease !important;
+display: flex !important;
+    z-index: 10 !important;
+
+}
+.quick-view-btn:hover .quick-view-btn-text {
+    transition: .3s ease !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+
+    border: 1px solid rgba(255, 255, 255, 0.3);
+
+    z-index: 10 !important;
+display: none !important;
+}
+.addToCart-btn:hover .addToCart-btn-text {
+    transition: .3s ease !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    opacity: 0;
+    z-index: 10 !important;
+    display: none;
+}
+.icon-com:active{
+/* Start the shake animation and make the animation last for 0.5 seconds */
+animation: shake 0.5s cubic-bezier(.36, .07, .19, .97) both;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+
+    /* When the animation is finished, start again */
+
+}
+
+@keyframes shake {
+
+    10%,
+    90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    20%,
+    80% {
+        transform: translate3d(2px, 0, 0);
+    }
+
+    30%,
+    50%,
+    70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%,
+    60% {
+        transform: translate3d(4px, 0, 0);
+    }
+}
+
+@keyframes runRotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(-359deg);
+    }
+}
+.itemsContainer{
+
+        transition: .8s ease-in-out !important;
+}

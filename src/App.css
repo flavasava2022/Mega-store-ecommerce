@@ -1,0 +1,131 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+*{
+    box-sizing: border-box;
+    scroll-behavior: smooth !important;
+        font-family: "Poppins", sans-serif !important;
+}
+
+
+
+.Input-Number input{
+    text-align: center !important;
+    border: none !important;
+
+}
+.Input-Number input:active {
+    text-align: center !important;
+    border: none !important;
+box-shadow: none !important;
+}
+.Input-Number  {
+    text-align: center !important;
+    background-color: transparent !important;
+    border: none !important;
+}
+
+
+/* _______________________________ Scroll _________________________ */
+
+.custom__scroll{
+    -ms-overflow-style: none;
+    /* Internet Explorer 10+ */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+.hide__scroll::-webkit-scrollbar {
+    display: none;
+    /* Safari and Chrome */
+}
+
+.custom__scroll::-webkit-scrollbar {
+    width: 50px;
+    height: 50px;
+}
+
+/* Track */
+.custom__scroll::-webkit-scrollbar-track {
+    background: #f1f1f1 !important;
+}
+
+/* Handle */
+.custom__scroll::-webkit-scrollbar-thumb {
+    background-color: #6895D2 !important;
+    border-radius: 2em;
+}
+
+/* Handle on hover */
+.custom__scroll::-webkit-scrollbar-thumb:hover {
+    background-color: #6895D2 !important;
+}
+
+
+
+/*       ScrollBar 1        */
+
+.scrollbar::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+    border-radius: 8px;
+    background-color: #D04848;
+    border: 1px solid #cacaca;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color:  #e7e7e7;
+}
+
+.ant-collapse-expand-icon{
+    color: white !important;
+}
+.picHolder{
+transition: 0.3s ease-in-out !important;
+}
+.footer-menu{
+    color: white !important;
+    transition: 0.3s ease-in !important;
+}
+.footer-menu:hover {
+    color: #6895D2 !important;
+
+    
+}
+.Header-menu {
+    /* color: white !important; */
+    transition: 0.3s ease-in !important;
+}
+
+.Header-menu:hover {
+    background-color: #6895D2 !important;
+    color: white !important;
+
+}
+.header-menu:active {
+    /* color: white !important; */
+    color: #6895D2 !important;
+}
+
+.header-menu:hover {
+    color: #6895D2 !important;
+
+
+}
+.sticky-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    /* Set your desired background color */
+    z-index: 1000;
+    /* Set a high z-index value to ensure it stays on top */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Optional: Add a shadow for better visibility */
+}

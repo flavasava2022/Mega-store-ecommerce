@@ -1,0 +1,37 @@
+.carousel{
+    transition: all 0.3s;
+}
+.arrow {
+
+
+background: #6895D2;
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(16.9px);
+    -webkit-backdrop-filter: blur(16.9px);
+    border: 1px solid #6895D2;
+}
+.container {
+
+background: rgba(255, 255, 255, 0.82);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(50px);
+    -webkit-backdrop-filter: blur(50px);
+    border: 1px solid rgba(255, 255, 255, 1);
+}
+.category-container {
+    transition: 0.3s ease-in;
+    cursor: pointer;
+}
+.category-container:hover {
+    background-color: #D04848;
+}
+
+.category-container:hover .category-logo {
+    color: white !important;
+}
+
+.category-container:hover .category-text {
+    color: white !important;
+}
