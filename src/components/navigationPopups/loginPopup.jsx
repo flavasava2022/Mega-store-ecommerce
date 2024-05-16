@@ -14,12 +14,14 @@ import { login } from "../../utils/strapi/strapi";
 import { CiLogout, CiMail } from "react-icons/ci";
 import { LuClipboardList } from "react-icons/lu";
 import { RiLockPasswordLine } from "react-icons/ri";
-import { FaRegUser } from "react-icons/fa";
+import { FaRegHeart, FaRegUser } from "react-icons/fa";
 import { getCartData } from "../../store/cart/cart.actions";
 import { getWishlistData } from "../../store/wishlist/wishlist.actions";
 import { useState } from "react";
 import { useMediaQuery } from "react-responsive";
+import { Navigate, useNavigate } from "react-router-dom";
 function LoginPopup() {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const isDesktopOrLaptop = useMediaQuery({
     query: "(min-width: 1024px)",
@@ -75,9 +77,9 @@ function LoginPopup() {
       type: "divider",
     },
     {
-      icon: <FaRegUser style={{ fontSize: "20px" }} />,
-      label: "My Account",
-      key: "My Account",
+      icon: <FaRegHeart style={{ fontSize: "20px" }} />,
+      label: "Wish List",
+      key: "wishlist",
       style: {
         padding: "10px",
         display: "flex",
@@ -88,8 +90,8 @@ function LoginPopup() {
     },
     {
       icon: <LuClipboardList style={{ fontSize: "20px" }} />,
-      label: "My Order",
-      key: "My Order",
+      label: "Cart",
+      key: "checkout",
       style: {
         padding: "10px",
         display: "flex",
@@ -104,8 +106,8 @@ function LoginPopup() {
     },
     {
       icon: <CiLogout style={{ fontSize: "20px" }} />,
-      label: <p onClick={handleLogout}>Log out</p>,
-      key: "Log out",
+      label: <p>Log out</p>,
+      key: "Logout",
       style: {
         padding: "10px",
         display: "flex",
@@ -115,6 +117,12 @@ function LoginPopup() {
       className: "Header-menu",
     },
   ];
+  const onClick = (e) => {
+    console.log(e.key);
+    if (e.key === "Logout") {
+      handleLogout();
+    } else navigate(`/${e.key}`);
+  };
   return (
     <>
       {isDesktopOrLaptop ? (
@@ -145,6 +153,7 @@ function LoginPopup() {
                   </div>
                   <Menu
                     items={items}
+                    onClick={onClick}
                     style={{
                       boxShadow: "none",
                       background: "#FFFFFF",

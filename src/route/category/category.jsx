@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { Pagination, Select, Spin } from "antd";
+import { Empty, Pagination, Select, Spin } from "antd";
 import GridNumber from "./grid";
 
 import { useSearchParams } from "react-router-dom";
@@ -198,14 +198,19 @@ function Category() {
               <Spin size="large" />
             </div>
           ) : (
-            <div
-              className=" ease-in duration-500 grid items-center  justify-center   gap-6 itemsContainer w-full my-4"
-              style={{ gridTemplateColumns: `repeat(${gridValue}, 1fr)` }}
-            >
-              {/* Render paginated items */}
-              {paginatedItems?.map((item, index) => (
-                <ItemContainer item={item} key={item.id} id={item.id} />
-              ))}
+            <div className="min-h-[80vh] flex items-center justify-center">
+              {paginatedItems?.length === 0 ? (
+                <Empty />
+              ) : (
+                <div
+                  className=" ease-in duration-500 grid items-center  justify-center   gap-6 itemsContainer w-full my-4 min-h-[80vh]"
+                  style={{ gridTemplateColumns: `repeat(${gridValue}, 1fr)` }}
+                >
+                  {paginatedItems?.map((item, index) => (
+                    <ItemContainer item={item} key={item.id} id={item.id} />
+                  ))}
+                </div>
+              )}
             </div>
           )}
 
