@@ -22,6 +22,7 @@ Experience MegaStore live by visiting our [online demo](https://mega-store-ecomm
 - Tailwind CSS
 - Redux Toolkit
 - React Router
+- Axios
 - Strapi (Backend)
 
 ## Running Locally
