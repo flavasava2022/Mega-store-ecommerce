@@ -26,8 +26,11 @@ function Carousel({ offer, Heading, text }) {
   }, []);
   const [movement, setMovement] = useState(0);
 
-  const end = Number((data.length - (width * 0.9) / 265) * -250);
-  const start = Number((data.length - (width * 0.9) / 265) * 250);
+  const itemWidth = 265; // The width of each item
+  const visibleItems = Math.floor((width * 0.9) / itemWidth);
+  const totalItemsWidth = data.length * itemWidth;
+  const end = -totalItemsWidth + visibleItems * itemWidth;
+  const start = 0;
   const leftArrow = () => {
     if (movement === 0) {
       setMovement(end);
@@ -41,11 +44,12 @@ function Carousel({ offer, Heading, text }) {
       }
     }
   };
+
   const rightArrow = () => {
     if (movement === start) {
-      setMovement(0);
+      setMovement(-265);
     } else {
-      if (movement <= end) {
+      if (movement === end) {
         setMovement(0);
       } else {
         setMovement((pervState) => {
@@ -54,6 +58,7 @@ function Carousel({ offer, Heading, text }) {
       }
     }
   };
+
   const triggerRender = () => {
     setForceUpdate((prevState) => !prevState);
   };
