@@ -24,6 +24,7 @@ import {
   Signup,
   WishList,
 } from "./utils/lazy/lazy";
+import ErrorPage from "./route/ErrorPage/ErrorPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -82,6 +83,7 @@ function App() {
         { path: "/product/:slug", element: <Product /> },
         { path: "/checkout", element: <Checkout /> },
         { path: "/about", element: <About /> },
+        { path: "*", element: <ErrorPage /> },
       ],
     },
   ]);
