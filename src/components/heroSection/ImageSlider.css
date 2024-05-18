@@ -1,0 +1,18 @@
+.slider-content {
+    display: flex;
+    position: relative;
+
+}
+
+.slide-image {
+
+    position: absolute;
+opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    width: 100%;
+    border-radius: 10px;
+}
+
+.slide-image.active {
+    opacity: 1;
+}

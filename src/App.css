@@ -86,7 +86,14 @@ box-shadow: none !important;
     color: white !important;
 }
 .picHolder{
-transition: 0.3s ease-in-out !important;
+display: flex;
+    transition: transform 0.5s ease-in-out;
+    will-change: transform;
+}
+.slide-image {
+    min-width: 100%;
+    border-radius: 10px;
+    transition: opacity 0.5s ease-in-out;
 }
 .footer-menu{
     color: white !important;

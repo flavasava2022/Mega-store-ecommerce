@@ -274,6 +274,7 @@ function LoginPopup() {
                     borderInline: "0px",
                     border: "none",
                   }}
+                  onClick={onClick}
                 />
               </div>
             ) : (

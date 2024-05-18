@@ -1,8 +1,8 @@
 import { Divider } from "antd";
-import middlePic from "../../assets/pexels-mstudio-1240892.jpg";
-import fullPic from "../../assets//woman.jpg";
-import halfPic from "../../assets/pexels-dom-j-45982.jpg";
-import halfpic2 from "../../assets/pexels-ylanite-koppens-934070.jpg";
+import middlePic from "../../assets/pexels-mstudio-1240892.webp";
+import fullPic from "../../assets//woman.webp";
+import halfPic from "../../assets/pexels-dom-j-45982.webp";
+import halfpic2 from "../../assets/pexels-ylanite-koppens-934070.webp";
 import deliveryPic from "../../assets/deliver.svg";
 import servicePic from "../../assets/Services.svg";
 import gaurntePic from "../../assets/garanty.svg";
