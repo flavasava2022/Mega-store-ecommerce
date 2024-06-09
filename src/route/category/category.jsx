@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { Empty, Pagination, Select, Spin } from "antd";
+import { Button, Empty, Pagination, Select, Spin } from "antd";
 import GridNumber from "./grid";
 
 import { useSearchParams } from "react-router-dom";
@@ -44,7 +44,7 @@ function Category() {
   const { loading, data, error } = useFetch(
     `/products?${queryString}&populate=*`
   );
-  const [currentPage, setCurrentPage] = useState(1);
+
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
   const [gridValue, setGridValue] = useState("5");
@@ -77,21 +77,14 @@ function Category() {
     });
     setPaginatedItems(
       filteredItems?.slice(
-        (currentPage - 1) * itemsPerPage,
-        currentPage *
-          (itemsPerPage >= filteredItems?.length
-            ? filteredItems?.length
-            : itemsPerPage)
+        0,
+
+        itemsPerPage >= filteredItems?.length
+          ? filteredItems?.length
+          : itemsPerPage
       )
     );
-  }, [
-    data,
-    currentPage,
-    itemsPerPage,
-    filterMaxPrice,
-    filterMinPrice,
-    filterName,
-  ]);
+  }, [data, itemsPerPage, filterMaxPrice, filterMinPrice, filterName]);
   const onGridChange = (value) => {
     setGridValue(value);
   };
@@ -102,7 +95,13 @@ function Category() {
       return prevParams;
     });
   };
-
+  const ShowMoreFun = () => {
+    itemsPerPage >= data?.length
+      ? setItemsPerPage(data?.length)
+      : setItemsPerPage((pervState) => {
+          return pervState * 2;
+        });
+  };
   return (
     <div className="flex items-start justify-start gap-2 flex-col w-full mx-auto  my-4 min-h-[80vh] mt-8">
       {error ? (
@@ -203,7 +202,7 @@ function Category() {
                 <Empty />
               ) : (
                 <div
-                  className=" ease-in duration-500 grid items-center  justify-center   gap-6 itemsContainer w-full my-4 min-h-[80vh]"
+                  className=" ease-in duration-500 grid items-start  justify-center   gap-6 itemsContainer w-full my-4 min-h-[80vh]"
                   style={{ gridTemplateColumns: `repeat(${gridValue}, 1fr)` }}
                 >
                   {paginatedItems?.map((item, index) => (
@@ -214,15 +213,16 @@ function Category() {
             </div>
           )}
 
-          <Pagination
-            defaultCurrent={1}
-            total={data?.length}
-            onChange={(page) => setCurrentPage(page)}
-            hideOnSinglePage={true}
-            className="mt-4"
-            size={isDesktopOrLaptop ? "large" : "small"}
-            showSizeChanger={false}
-          />
+          {itemsPerPage >= data?.length ? (
+            ""
+          ) : (
+            <Button
+              type="primary flex items-center justify-center mx-auto rounded-full w-[80%] lg:w-[20%] p-4 h-auto font-bold mt-6 text-[1rem]"
+              onClick={ShowMoreFun}
+            >
+              Show More
+            </Button>
+          )}
         </div>
       )}
 

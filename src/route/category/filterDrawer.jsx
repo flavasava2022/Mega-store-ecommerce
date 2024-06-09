@@ -68,7 +68,7 @@ function FilterDrawer({
       });
     }
   };
-
+  console.log(searchParams.get("category")?.replaceAll("&", " ").split(" "));
   return (
     <Drawer
       title="FILTER"
@@ -111,7 +111,7 @@ function FilterDrawer({
             defaultValue={
               searchParams.get("category") === null
                 ? []
-                : [searchParams.get("category")]
+                : searchParams.get("category")?.replaceAll("&", " ").split(" ")
             }
             options={categoryOptions}
             onChange={onCategoryChange}
