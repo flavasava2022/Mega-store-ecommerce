@@ -66,6 +66,7 @@ function Product() {
     setSelectedSize(data[0]?.attributes?.sizes[0]);
     setSelectedBox(data[0]?.attributes?.colors[0]);
   }, [data]);
+  console.log(data);
   const description = [
     {
       key: "1",
@@ -150,14 +151,27 @@ function Product() {
                         <div
                           className="w-[35%]   cursor-pointer"
                           onClick={() =>
-                            setSelectedImg({ ...selectedImg, index: i })
+                            setSelectedImg({
+                              url:
+                                data[0]?.attributes?.images?.data[i]?.attributes
+                                  ?.url === undefined
+                                  ? data[0]?.attributes?.images?.data[0]
+                                      ?.attributes?.url
+                                  : data[0]?.attributes?.images?.data[i]
+                                      ?.attributes?.url,
+                              index: i,
+                            })
                           }
                           key={i}
                         >
                           <img
                             src={
-                              data[0]?.attributes?.images?.data[0]?.attributes
-                                ?.url
+                              data[0]?.attributes?.images?.data[i]?.attributes
+                                ?.url === undefined
+                                ? data[0]?.attributes?.images?.data[0]
+                                    ?.attributes?.url
+                                : data[0]?.attributes?.images?.data[i]
+                                    ?.attributes?.url
                             }
                             alt=""
                             className={`w-[100%] h-[100%]   object-scale-down ${

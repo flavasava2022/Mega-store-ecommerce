@@ -29,25 +29,45 @@ function Header() {
         {
           label: "Home",
           key: "home",
-          style: { fontSize: "18px" },
+          style: {
+            fontSize: "18px",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+          },
           className: "header-menu",
         },
         {
           label: "Products",
           key: "products",
-          style: { fontSize: "18px" },
+          style: {
+            fontSize: "18px",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+          },
           className: "header-menu",
         },
         {
           label: "About",
           key: "about",
-          style: { fontSize: "18px" },
+          style: {
+            fontSize: "18px",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+          },
           className: "header-menu",
         },
         {
           label: "Sign up",
           key: "signup",
-          style: { fontSize: "18px" },
+          style: {
+            fontSize: "18px",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+          },
           className: "header-menu",
         },
       ]
@@ -55,25 +75,45 @@ function Header() {
         {
           label: "Home",
           key: "home",
-          style: { fontSize: "18px" },
+          style: {
+            fontSize: "18px",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+          },
           className: "header-menu",
         },
         {
           label: "Products",
           key: "products",
-          style: { fontSize: "18px" },
+          style: {
+            fontSize: "18px",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+          },
           className: "header-menu",
         },
         {
           label: "About",
           key: "about",
-          style: { fontSize: "18px" },
+          style: {
+            fontSize: "18px",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+          },
           className: "header-menu",
         },
         {
           label: "Sign up",
           key: "signup",
-          style: { fontSize: "18px" },
+          style: {
+            fontSize: "18px",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+          },
           className: "header-menu",
         },
         {
@@ -84,13 +124,23 @@ function Header() {
           label: "Cart",
           key: "checkout",
           className: "header-menu",
-          style: { fontSize: "18px" },
+          style: {
+            fontSize: "18px",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+          },
         },
         {
           label: "Wishlist",
           key: "Wishlist",
           className: "header-menu",
-          style: { fontSize: "18px" },
+          style: {
+            fontSize: "18px",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+          },
         },
 
         {
@@ -108,7 +158,7 @@ function Header() {
 
   return (
     <>
-      <Header className="flex items-center justify-between text-white bg-[#FFFFFF] px-[5%]  h-[8vh]  sticky-header">
+      <Header className="flex items-center justify-between text-white bg-[#FFFFFF] px-[5%]  min-h-[8vh]  sticky-header py-1">
         <div className="flex items-center justify-between gap-2">
           <Link to={"/"}>
             <img
@@ -141,7 +191,7 @@ function Header() {
               }
               mode="horizontal"
               items={items}
-              className="bg-transparent border-none w-[40%] min-w-fit flex items-center justify-center"
+              className="bg-transparent border-none w-[40%] min-w-fit flex items-center justify-center h-[90%]"
               onClick={onClick}
             />
             <div className=" p-2 flex gap-4 text-xl items-center">
