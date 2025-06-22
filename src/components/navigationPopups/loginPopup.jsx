@@ -20,6 +20,7 @@ import { getWishlistData } from "../../store/wishlist/wishlist.actions";
 import { useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Navigate, useNavigate } from "react-router-dom";
+import { supabase } from "../../utils/supabase";
 function LoginPopup() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -42,35 +43,41 @@ function LoginPopup() {
     let email = values.email;
     let password = values.password;
     try {
-      const user = await login(email, password);
-      dispatch(setCurrentUser(user));
-      api["success"]({
-        message: "Login Successful",
-        description: `Welcome Back, ${user.username}`,
-        placement: "top",
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
       });
-      setLoading(false);
-    } catch (error) {
-      api["error"]({
-        message: "Login UnSuccessful",
-        description: error.response?.data?.error?.message || error.message,
-        placement: "top",
-      });
-      setLoading(false);
-    }
+      if (error) {
+        api["error"]({
+          message: error.error_description,
+          description: error.message,
+          placement: "top",
+        });
+      } else {
+        if (data) {
+          dispatch(setCurrentUser(data.user));
+          api["success"]({
+            message: "Login Successful",
+            description: `Welcome Back, ${
+              data?.user_metadata?.displayName || data.email
+            }`,
+            placement: "top",
+          });
+        }
+      }
+    } catch (error) {}
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("jwt");
-    localStorage.removeItem("user");
-    dispatch(setCurrentUser(null));
-    dispatch(getCartData());
-    dispatch(getWishlistData());
-    api["success"]({
-      message: "Log out Successful",
-      description: `You Successfully Logged Out`,
-      placement: "top",
-    });
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (!error) {
+      api["success"]({
+        message: "Log out Successful",
+        description: `You Successfully Logged Out`,
+        placement: "top",
+      });
+      dispatch(setCurrentUser(null));
+    }
   };
   const items = [
     {
@@ -118,7 +125,6 @@ function LoginPopup() {
     },
   ];
   const onClick = (e) => {
-    console.log(e.key);
     if (e.key === "Logout") {
       handleLogout();
     } else navigate(`/${e.key}`);
@@ -141,13 +147,13 @@ function LoginPopup() {
                     <div className="img">
                       <div className="w-[45px] h-[45px] flex items-center justify-center bg-[#6895D2] rounded-full p-1">
                         <p className="font-semibold text-white">
-                          {user?.username[0].toUpperCase()}
+                          {user?.user_metadata?.displayName[0].toUpperCase()}
                         </p>
                       </div>
                     </div>
                     <div className="flex flex-col items-start">
                       <h4 className="text-black capitalize font-semibold">
-                        {user?.username}
+                        {user?.user_metadata?.displayName}
                       </h4>
                     </div>
                   </div>
@@ -252,13 +258,13 @@ function LoginPopup() {
                   <div className="img">
                     <div className="w-[45px] h-[45px] flex items-center justify-center bg-[#6895D2] rounded-full p-1">
                       <p className="font-semibold text-white">
-                        {user?.username[0].toUpperCase()}
+                        {user?.user_metadata?.displayName[0].toUpperCase()}
                       </p>
                     </div>
                   </div>
                   <div className="flex flex-col items-start">
                     <h4 className="text-black capitalize font-semibold">
-                      {user?.username}
+                      {user?.user_metadata?.displayName}
                     </h4>
                   </div>
                 </div>

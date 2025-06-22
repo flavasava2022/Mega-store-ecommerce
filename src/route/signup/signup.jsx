@@ -5,9 +5,9 @@ import { LockOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
 
 import { setCurrentUser } from "../../store/user/user.reducer";
 import { useDispatch } from "react-redux";
-import { signUp } from "../../utils/strapi/strapi";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { supabase } from "../../utils/supabase";
 function Signup() {
   const [loading, setLoading] = useState(false);
   const [api, contextHolder] = notification.useNotification();
@@ -20,18 +20,28 @@ function Signup() {
       let password = values.password;
       let displayName = values.username;
       try {
-        const user = await signUp(email, password, displayName);
-        dispatch(setCurrentUser(user));
-        navigate("/");
-        setLoading(false);
-      } catch (error) {
-        api["error"]({
-          message: "Signup UnSuccessful",
-          description: error.response?.data?.error?.message || error.message,
-          placement: "top",
+        const { data, error } = await supabase.auth.signUp({
+          email: email,
+          password: password,
+          options: {
+            data: {
+              displayName: displayName,
+            },
+          },
         });
-        setLoading(false);
-      }
+        if (!error) {
+          dispatch(setCurrentUser(data.user));
+          navigate("/");
+          setLoading(false);
+        } else {
+          api["error"]({
+            message: error.message,
+            description: error.message,
+            placement: "top",
+          });
+          setLoading(false);
+        }
+      } catch (error) {}
     } else {
       api["error"]({
         message: "Auth problem",

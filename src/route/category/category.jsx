@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { Button, Empty, Pagination, Select, Spin } from "antd";
+import { Button, Empty, Spin } from "antd";
 import GridNumber from "./grid";
 
 import { useSearchParams } from "react-router-dom";
@@ -8,43 +8,11 @@ import ItemContainer from "../../components/itemContainer/itemContainer";
 import FilterDrawer from "./filterDrawer";
 import { useFetch } from "../../hooks/useFetch";
 import { FaFilter } from "react-icons/fa";
-import { useMediaQuery } from "react-responsive";
+
 function Category() {
-  const isDesktopOrLaptop = useMediaQuery({
-    query: "(min-width: 1024px)",
-  });
-
+  const [forceUpdate, setForceUpdate] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
-  const queryString = Array.from(searchParams.entries())
-    .map(([key, value]) => {
-      switch (key) {
-        case "sort":
-          return `${key}=${value}`;
-          break;
-        case "onSale":
-          return `filters[${key}][$eq]=${value}`;
-          break;
-        case "trends":
-          return `filters[${key}][$eq]=${value}`;
-          break;
-        case "category":
-          return value
-            ?.split("&")
-            .map((entry) => {
-              return `filters[${key}][$eq]=${entry}`;
-            })
-            .join("&");
-
-          break;
-        default:
-          break;
-      }
-    })
-    .join("&");
-  const { loading, data, error } = useFetch(
-    `/products?${queryString}&populate=*`
-  );
-
+  const { loading, data, error } = useFetch(forceUpdate);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
   const [gridValue, setGridValue] = useState("5");
@@ -62,18 +30,33 @@ function Category() {
   };
 
   useEffect(() => {
-    const filteredItems = data.filter((item) => {
-      const isPriceInRange =
-        item?.attributes?.price <= parseFloat(filterMaxPrice) &&
-        item?.attributes?.price >= parseFloat(filterMinPrice);
+    const categoriesList = searchParams.get("category")
+      ? searchParams.get("category").split("&")
+      : [];
 
+    const filteredItems = data.filter((item) => {
+      const isInCategory =
+        categoriesList.length === 0
+          ? true
+          : categoriesList.find((Category) => Category === item?.category);
+      const isPriceInRange =
+        item?.price <= parseFloat(filterMaxPrice) &&
+        item?.price >= parseFloat(filterMinPrice);
+      const isOnSale =
+        (searchParams.get("onSale") === "true" ? 1 : 0) === item?.on_sale;
+      const isTrending =
+        (searchParams.get("trends") === "true" ? 1 : 0) === item?.trends;
       const hasSelectedFilterNames =
         filterName.length === 0 ||
-        item.attributes?.name
-          .toLowerCase()
-          .includes(filterName.toLocaleLowerCase());
+        item?.name.toLowerCase().includes(filterName.toLocaleLowerCase());
 
-      return isPriceInRange && hasSelectedFilterNames;
+      return (
+        isPriceInRange &&
+        hasSelectedFilterNames &&
+        (searchParams.get("onSale") === "true" ? isOnSale : true) &&
+        (searchParams.get("trends") === "true" ? isTrending : true) &&
+        isInCategory
+      );
     });
     setPaginatedItems(
       filteredItems?.slice(
@@ -84,28 +67,40 @@ function Category() {
           : itemsPerPage
       )
     );
-  }, [data, itemsPerPage, filterMaxPrice, filterMinPrice, filterName]);
+  }, [
+    data,
+    itemsPerPage,
+    filterMaxPrice,
+    filterMinPrice,
+    filterName,
+    searchParams,
+  ]);
   const onGridChange = (value) => {
     setGridValue(value);
   };
-  const handleSortChange = (value) => {
-    setSearchParams((prevParams) => {
-      prevParams.set("sort", value);
 
-      return prevParams;
-    });
-  };
-  const ShowMoreFun = () => {
+  const ShowMore = () => {
     itemsPerPage >= data?.length
       ? setItemsPerPage(data?.length)
       : setItemsPerPage((pervState) => {
           return pervState * 2;
         });
   };
+  const triggerRender = () => {
+    setForceUpdate((prevState) => !prevState);
+  };
   return (
     <div className="flex items-start justify-start gap-2 flex-col w-full mx-auto  my-4 min-h-[80vh] mt-8">
       {error ? (
-        <p>Failed to Fetch Data</p>
+        <div className="mx-auto h-[25rem] flex items-center justify-center gap-2 text-xl ">
+          Failed to Fetch Data{" "}
+          <span
+            className=" underline text-red-500 cursor-pointer"
+            onClick={triggerRender}
+          >
+            Try Again
+          </span>
+        </div>
       ) : (
         <div className="w-full flex flex-col items-center gap-2 justify-between p-2 ">
           <div className="w-full flex items-center justify-between">
@@ -162,35 +157,6 @@ function Category() {
                 setGridValue={setGridValue}
               />
             </div>
-            <Select
-              defaultValue={
-                searchParams.get("sort") === null
-                  ? ["name:asc"]
-                  : [searchParams.get("sort")]
-              }
-              style={{
-                width: 160,
-              }}
-              onChange={handleSortChange}
-              options={[
-                {
-                  label: " A-Z",
-                  value: "name:asc",
-                },
-                {
-                  label: "Z-A",
-                  value: "name:desc",
-                },
-                {
-                  label: "Price low to high",
-                  value: "price:asc",
-                },
-                {
-                  label: "Price high to low",
-                  value: "price:desc",
-                },
-              ]}
-            />
           </div>
           {loading ? (
             <div className="w-full min-h-[80vh] flex items-center justify-center">
@@ -218,7 +184,7 @@ function Category() {
           ) : (
             <Button
               type="primary flex items-center justify-center mx-auto rounded-full w-[80%] lg:w-[20%] p-4 h-auto font-bold mt-6 text-[1rem]"
-              onClick={ShowMoreFun}
+              onClick={ShowMore}
             >
               Show More
             </Button>

@@ -24,7 +24,7 @@ import { useMediaQuery } from "react-responsive";
 
 function ItemContainer({ item, id }) {
   const dispatch = useDispatch();
-
+  const user = useSelector((state) => state?.user?.user);
   const cartData = useSelector(selectCartItems);
   const wishlistData = useSelector(WishListData);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -51,6 +51,7 @@ function ItemContainer({ item, id }) {
         item: item,
         value: 1,
         messageApi: messageApi,
+        user: user,
       })
     );
   };
@@ -60,13 +61,13 @@ function ItemContainer({ item, id }) {
   return (
     <>
       <Link
-        to={`../product/${item?.attributes.name}`}
+        to={`../product/${item?.name}`}
         className="min-w-[200px]   h-[420px]"
       >
         <div className="main-container relative bg-white p-6 text-center overflow-hidden shadow-inner	border-1 min-w-[200px]   h-[420px] rounded-3xl flex flex-col items-center gap-4 border-2 border-grey cursor-pointer">
           <div className="w-[95%] min-h-[70%] max-h-[70%]  rounded-3xl">
             <img
-              src={item?.attributes?.images?.data[0]?.attributes?.url}
+              src={item?.imageUrl}
               alt=""
               className="w-[100%] h-[100%] rounded-3xl  object-scale-down"
             />
@@ -83,6 +84,7 @@ function ItemContainer({ item, id }) {
                       wishlist: wishlistData,
                       item: item,
                       messageApi: messageApi,
+                      user: user,
                     })
                   );
                 }}
@@ -120,11 +122,11 @@ function ItemContainer({ item, id }) {
               </Button>
             </div>
           </div>
-          <p className="text-center overflow-hidden">{item.attributes?.name}</p>
+          <p className="text-center overflow-hidden">{item?.name}</p>
           <div className="flex items-center justify-between w-full mt-auto">
-            <Rate disabled defaultValue={item.attributes?.rating} />
+            <Rate disabled defaultValue={item?.rating} />
             <p className="flex items-center border-2 border-[#6895D2] rounded-lg min-w-fit font-medium p-2 text-[#6895D2] !leading-none ">
-              $ {item.attributes?.price}
+              $ {item?.price}
             </p>
           </div>
 

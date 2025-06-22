@@ -20,6 +20,7 @@ function ItemCarousel({ item }) {
   const dispatch = useDispatch();
   const wishlistData = useSelector(WishListData);
   const cartData = useSelector(selectCartItems);
+  const user = useSelector((state) => state?.user?.user);
   const [messageApi, contextHolder] = message.useMessage();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -43,13 +44,13 @@ function ItemCarousel({ item }) {
   return (
     <>
       <Link
-        to={`../product/${item?.attributes.name}`}
+        to={`../product/${item?.name}`}
         className="w-[20%] min-w-[242px]   h-[90%]"
       >
         <div className=" main-container relative  bg-white p-6 text-center overflow-hidden shadow-inner	border-2 border-grey-100 w-[20%] min-w-[242px]   h-[90%] rounded-3xl flex flex-col items-center gap-4 cursor-pointer">
           <div className="w-[90%] min-h-[60%] max-h-[60%] rounded-3xl ">
             <img
-              src={item?.attributes?.images?.data[0]?.attributes?.url}
+              src={item?.imageUrl}
               alt=""
               className="w-[100%] h-[100%] object-scale-down rounded-3xl"
             />
@@ -75,14 +76,16 @@ function ItemCarousel({ item }) {
               loading={loadingAddToCartBTN}
               onClick={(event) => {
                 event.preventDefault();
+
                 dispatch(
                   addDataToCart({
                     cartData: cartData,
                     item: item,
                     value: 1,
-                    selectedSize: item.attributes.sizes[0],
-                    selectedColor: item.attributes.colors[0],
+                    selectedSize: item.sizes[0],
+                    selectedColor: item.colors[0],
                     messageApi: messageApi,
+                    user: user,
                   })
                 );
               }}
@@ -97,12 +100,12 @@ function ItemCarousel({ item }) {
             </Button>
           </div>
           <p className="text-center overflow-hidden max-h-[45px]">
-            {item?.attributes?.name}
+            {item?.name}
           </p>
           <div className="flex items-center justify-between w-full mt-auto">
-            <Rate disabled defaultValue={item?.attributes?.rating} />
+            <Rate disabled defaultValue={item?.rating} />
             <p className="flex items-center border-2 border-[#6895D2] rounded-lg min-w-fit font-medium p-2 text-[#6895D2] !leading-none ">
-              $ {Math.floor(item?.attributes?.price)}
+              $ {Math.floor(item?.price)}
             </p>
           </div>
         </div>

@@ -4,15 +4,12 @@ import "./App.css";
 
 import { lazy, Suspense, useEffect } from "react";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setCurrentUser } from "./store/user/user.reducer";
-import axios from "axios";
+
 import { LoadingOutlined } from "@ant-design/icons";
-import { getCartData } from "./store/cart/cart.actions";
-import { selectUser } from "./store/user/user.selectors";
 
 import { notification, Spin } from "antd";
-import { getWishlistData } from "./store/wishlist/wishlist.actions";
 
 import {
   About,
@@ -25,51 +22,34 @@ import {
   WishList,
 } from "./utils/lazy/lazy";
 import ErrorPage from "./route/ErrorPage/ErrorPage";
+import { supabase } from "./utils/supabase";
+import { getCartData } from "./store/cart/cart.actions";
+import { getWishlistData } from "./store/wishlist/wishlist.actions";
 
 function App() {
   const dispatch = useDispatch();
-  const user = useSelector(selectUser);
-  const jwt = localStorage.getItem("jwt");
   const [api, contextHolder] = notification.useNotification();
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {});
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) {
+        dispatch(setCurrentUser(session?.user));
+        dispatch(getCartData(session?.user?.id));
+        dispatch(getWishlistData(session?.user?.id));
+        api["success"]({
+          message: "Login Successful",
+          description: `Welcome Back, ${
+            session?.user.user_metadata?.displayName || session?.user.email
+          }`,
+          placement: "top",
+        });
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [api, dispatch]);
 
-  const fetchUser = async (jwt) => {
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/users/me`,
-        {
-          headers: {
-            Authorization: `Bearer ${jwt}`,
-          },
-        }
-      );
-      dispatch(setCurrentUser(response.data));
-      api["success"]({
-        message: "Login Successful",
-        description: `Welcome Back, ${response.data?.username}`,
-        placement: "top",
-      });
-    } catch (error) {
-      console.error("Failed to fetch user:", error);
-      api["error"]({
-        message: "Login error",
-        description: `${error}`,
-        placement: "top",
-      });
-      localStorage.removeItem("jwt");
-      localStorage.removeItem("user");
-    }
-  };
-  useEffect(() => {
-    if (jwt) {
-      fetchUser(jwt);
-    }
-  }, []);
-  useEffect(() => {
-    if (user) {
-      dispatch(getCartData(user));
-      dispatch(getWishlistData(user));
-    }
-  }, [user, api, dispatch]);
   const Routing = createBrowserRouter([
     {
       path: "",

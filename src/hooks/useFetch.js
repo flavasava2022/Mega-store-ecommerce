@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
+import { supabase } from "../utils/supabase";
 
-export const useFetch = (url,forceUpdate) => {
+export const useFetch = (forceUpdate) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -12,9 +13,14 @@ export const useFetch = (url,forceUpdate) => {
       setLoading(true);
       setError(null)
       try {
-        const res = await axios.get(process.env.REACT_APP_BASE_URL + url);
+        const { data, error } = await supabase
+        .from("products")
+        .select("*")
+        .order("created_at", {
+          ascending: false,
+        });
 
-        setData(res.data.data);
+        setData(data || []);
       } catch (error) {
         setError(error);
       }
@@ -22,6 +28,6 @@ export const useFetch = (url,forceUpdate) => {
       setLoading(false);
     };
     fetchData();
-  }, [url,forceUpdate]);
+  }, [forceUpdate]);
   return { data, loading, error };
 };

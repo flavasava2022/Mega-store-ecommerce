@@ -14,6 +14,7 @@ function AddToCartDrawer({ quantity, item }) {
   const dispatch = useDispatch();
   const [value, setValue] = useState(quantity);
   const cartData = useSelector(selectCartItems);
+  const user = useSelector((state) => state?.user?.user);
   const [messageApi, contextHolder] = message.useMessage();
   const increment = () => {
     if (value !== 10) {
@@ -23,9 +24,10 @@ function AddToCartDrawer({ quantity, item }) {
           cartData: cartData,
           item: item,
           value: 1,
-          selectedSize: item.attributes.sizes[0],
-          selectedColor: item.attributes.colors[0],
+          selectedSize: item?.sizes[0],
+          selectedColor: item?.colors[0],
           messageApi: messageApi,
+          user: user,
         })
       );
     }
@@ -38,6 +40,7 @@ function AddToCartDrawer({ quantity, item }) {
         item: item,
         value: value,
         messageApi: messageApi,
+        user: user,
       })
     );
   };

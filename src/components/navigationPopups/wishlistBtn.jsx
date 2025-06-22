@@ -43,22 +43,20 @@ function WishlistBtn() {
                         <div className=" w-[80px] h-[60px]">
                           {" "}
                           <img
-                            src={
-                              item?.attributes?.images.data[0].attributes.url
-                            }
-                            alt={item?.attributes?.name}
+                            src={item?.imageUrl}
+                            alt={item?.name}
                             className="w-[100%] h-[100%] object-cover"
                           />
                         </div>
 
                         <div className="flex items-center justify-between gap-2 p-2 w-full">
-                          <Link to={`../product/${item?.attributes.name}`}>
+                          <Link to={`../product/${item?.name}`}>
                             <p className="text-[13px]  font-normal leading-5	">
-                              {item?.attributes?.name}
+                              {item?.name}
                             </p>
                           </Link>
                           <p className="flex items-center border-2 border-[#6895D2] rounded-lg min-w-fit font-medium p-2 text-[#6895D2] !leading-none ">
-                            $ {item?.attributes?.price}
+                            $ {item?.price}
                           </p>
                         </div>
                       </div>
@@ -127,20 +125,20 @@ function WishlistBtn() {
                       <div className=" w-[80px] h-[60px]">
                         {" "}
                         <img
-                          src={item?.attributes?.images.data[0].attributes.url}
-                          alt={item?.attributes?.name}
+                          src={item?.imageUrl}
+                          alt={item?.name}
                           className="w-[100%] h-[100%] object-cover"
                         />
                       </div>
 
                       <div className="flex items-center justify-between gap-2 p-2 w-full">
-                        <Link to={`../product/${item?.attributes.name}`}>
+                        <Link to={`../product/${item?.name}`}>
                           <p className="text-[13px]  font-normal leading-5	">
-                            {item?.attributes?.name}
+                            {item?.name}
                           </p>
                         </Link>
                         <p className="flex items-center border-2 border-[#6895D2] rounded-lg min-w-fit font-medium p-2 text-[#6895D2] !leading-none ">
-                          $ {item?.attributes?.price}
+                          $ {item?.price}
                         </p>
                       </div>
                     </div>

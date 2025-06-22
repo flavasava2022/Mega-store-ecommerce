@@ -42,7 +42,7 @@ function Product() {
   };
 
   const dispatch = useDispatch();
-
+  const user = useSelector((state) => state?.user?.user);
   const wishlistData = useSelector(WishListData);
   const cartData = useSelector(selectCartItems);
   const loadingAddToCartBTN = useSelector(loadingAddToCart);
@@ -65,8 +65,8 @@ function Product() {
     });
     setSelectedSize(data[0]?.attributes?.sizes[0]);
     setSelectedBox(data[0]?.attributes?.colors[0]);
-  }, [data]);
-  console.log(data);
+  }, [data, selectedImg]);
+
   const description = [
     {
       key: "1",
@@ -213,6 +213,7 @@ function Product() {
                               wishlist: wishlistData,
                               item: data[0],
                               messageApi: messageApi,
+                              user: user,
                             })
                           );
                         }}
@@ -306,6 +307,7 @@ function Product() {
                             selectedSize: selectedSize,
                             selectedColor: selectedBox,
                             messageApi: messageApi,
+                            user: user,
                           })
                         );
                       }}

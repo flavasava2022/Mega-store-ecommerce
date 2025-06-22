@@ -68,7 +68,7 @@ function FilterDrawer({
       });
     }
   };
-  console.log(searchParams.get("category")?.replaceAll("&", " ").split(" "));
+
   return (
     <Drawer
       title="FILTER"

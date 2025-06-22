@@ -31,7 +31,7 @@ function QuickViewModal({ item, setIsModalOpen, isModalOpen, id }) {
   const dispatch = useDispatch();
   const wishlistData = useSelector(WishListData);
   const cartData = useSelector(selectCartItems);
-
+  const user = useSelector((state) => state?.user?.user);
   const [messageApi, contextHolder] = message.useMessage();
   const [wishlist, setWishlist] = useState(false);
   useEffect(() => {
@@ -67,7 +67,7 @@ function QuickViewModal({ item, setIsModalOpen, isModalOpen, id }) {
       label: <p className="text-black">Description</p>,
       children: (
         <p className=" max-h-[15vh] overflow-auto scrollbar text-gray-500">
-          {item.attributes?.description}
+          {item?.description}
         </p>
       ),
     },
@@ -83,21 +83,21 @@ function QuickViewModal({ item, setIsModalOpen, isModalOpen, id }) {
       <div className="flex justify-between py-4  gap-8 max-h-[100%] min-h-[100%]">
         <div className="w-[40%] min-h-[100%] max-h-[100%]  ">
           <img
-            src={item?.attributes?.images?.data[0]?.attributes?.url}
+            src={item?.imageUrl}
             alt=""
             className="w-[100%] h-[100%] object-fill"
           />
         </div>
         <div className="px-4 py-2 w-[60%] flex flex-col h-[100%] gap-5 justify-between">
-          <p className="text-xl font-semibold ">{item.attributes?.name}</p>
+          <p className="text-xl font-semibold ">{item?.name}</p>
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <p className="flex items-center border-2 border-[#6895D2] rounded-lg min-w-fit font-medium p-2 text-[#6895D2] !leading-none ">
-                $ {item.attributes?.price}
+                $ {item?.price}
               </p>
               <Rate
                 disabled
-                defaultValue={item.attributes?.rating}
+                defaultValue={item?.rating}
                 className=" text-[28px]"
               />
             </div>
@@ -111,6 +111,7 @@ function QuickViewModal({ item, setIsModalOpen, isModalOpen, id }) {
                     wishlist: wishlistData,
                     item: item,
                     messageApi: messageApi,
+                    user: user,
                   })
                 );
               }}
@@ -122,7 +123,7 @@ function QuickViewModal({ item, setIsModalOpen, isModalOpen, id }) {
               <p className="text-[18px] flex gap-2 items-center capitalize font-bold">
                 Color{" "}
               </p>
-              {item?.attributes?.colors?.map((colorName, i) => {
+              {item?.colors?.map((colorName, i) => {
                 return (
                   <ColorBox
                     color={colorName}
@@ -139,7 +140,7 @@ function QuickViewModal({ item, setIsModalOpen, isModalOpen, id }) {
               <p className="text-[18px] flex gap-2 items-center capitalize font-bold">
                 Size
               </p>
-              {item?.attributes?.sizes?.map((sizes, i) => {
+              {item?.sizes?.map((sizes, i) => {
                 return (
                   <SizeBox
                     text={sizes}
@@ -176,6 +177,7 @@ function QuickViewModal({ item, setIsModalOpen, isModalOpen, id }) {
                     selectedSize: selectedSize,
                     selectedColor: selectedBox,
                     messageApi: messageApi,
+                    user: user,
                   })
                 );
                 handleCancel();

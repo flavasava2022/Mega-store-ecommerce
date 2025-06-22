@@ -1,30 +1,22 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 
 
-export const getCartData = createAsyncThunk("GET_CART_DATA", async (user) => {
-  const jwt = localStorage.getItem("jwt");
+import { supabase } from "../../utils/supabase";
 
-  if (jwt) {
+
+
+export const getCartData = createAsyncThunk("GET_CART_DATA", async (userId) => {
+  if (userId) {
     try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/carts/${user?.shoppingCart}?populate=*`,
+      const { data, error } = await supabase
+        .from("cart")
+        .select("*")
+        .eq("user_id", userId);
 
-        {
-          headers: {
-            Authorization: `Bearer ${jwt}`,
-          },
-        }
-      );
-      // Handle success.
+      if (error) return error.message;
 
-      if (response.status === 200) {
-        return response?.data?.data?.attributes?.data;
-      } else return response;
-    } catch (error) {
-      // Handle error.
-      throw error?.message;
-    }
+      return data[0]?.data.map(item => JSON.parse(item)) || [];
+    } catch (err) {}
   } else {
     return [];
   }
@@ -38,9 +30,10 @@ export const addDataToCart = createAsyncThunk(
     selectedSize,
     selectedColor,
     messageApi,
+    user
   }) => {
-    const jwt = localStorage.getItem("jwt");
-    const user = JSON.parse(localStorage.getItem("user"));
+
+
     const found = cartData?.find((element) => element.id === item.id);
     let newCartData;
     if (found) {
@@ -72,44 +65,36 @@ export const addDataToCart = createAsyncThunk(
         },
       ];
     }
-    if (jwt && user?.shoppingCart) {
+
+    if (user?.id) {
+
       const data = newCartData;
 
       try {
-        const response = await axios.put(
-          `${process.env.REACT_APP_BASE_URL}/carts/${user?.shoppingCart}`,
-          {
-            data: {
-              data: data,
-            },
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${jwt}`,
-            },
-          }
-        );
+        const { error: updateError } = await supabase
+          .from("cart")
+          .update({
+            data: data,
+          })
+          .eq("user_id", user?.id);
 
-        messageApi.open({
-          type: "success",
-          content: `${item?.attributes?.name} Added To Cart Successfully`,
-        });
-
-        if (response.status === 200) {
-          return response?.data?.data?.attributes?.data;
-        } else return response;
-      } catch (error) {
+        if (!updateError) {
+          messageApi.open({
+            type: "success",
+            content: `${item?.name} Added To Cart Successfully`,
+          });
+          return data;
+        } else return updateError;
+      } catch (updateError) {
         messageApi.open({
           type: "error",
-          content: error?.message,
+          content: updateError?.message,
         });
-        // return error;
-        throw error?.message;
       }
     } else {
       messageApi.open({
         type: "success",
-        content: `${item?.attributes?.name} Added From Cart Successfully`,
+        content: `${item?.name} Added From Cart Successfully`,
       });
       return newCartData;
     }
@@ -118,8 +103,8 @@ export const addDataToCart = createAsyncThunk(
 
 export const removeDataFromCart = createAsyncThunk(
   "REMOVE_DATA_FROM_CART",
-  async ({ cartData, item, value, messageApi }) => {
-    const jwt = localStorage.getItem("jwt");
+  async ({ cartData, item, value, messageApi,user }) => {
+
 
     let newCartData;
     if (value !== 1) {
@@ -133,43 +118,36 @@ export const removeDataFromCart = createAsyncThunk(
     } else {
       newCartData = cartData.filter((cartItem) => cartItem.id !== item?.id);
     }
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (jwt && user?.shoppingCart) {
+
+    if (user?.id) {
       const data = newCartData;
 
       try {
-        const response = await axios.put(
-          `${process.env.REACT_APP_BASE_URL}/carts/${user?.shoppingCart}`,
-          {
-            data: {
-              data: data,
-            },
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${jwt}`,
-            },
-          }
-        );
-        messageApi.open({
-          type: "success",
-          content: `${item?.attributes?.name} Removed From Cart Successfully`,
-        });
+        const { error: updateError } = await supabase
+          .from("cart")
+          .update({
+            data: data,
+          })
+          .eq("user_id", user?.id);
 
-        if (response.status === 200) {
-          return response?.data?.data?.attributes?.data;
-        } else return response;
-      } catch (error) {
+        if (!updateError) {
+          messageApi.open({
+            type: "success",
+            content: `${item?.name} Removed From cart Successfully`,
+          });
+          return data;
+        } else return updateError;
+      } catch (updateError) {
         messageApi.open({
           type: "error",
-          content: error?.message,
+          content: updateError?.message,
         });
-        throw error?.message;
+        throw updateError?.message;
       }
     } else {
       messageApi.open({
         type: "success",
-        content: `${item?.attributes?.name} Removed From Cart Successfully`,
+        content: `${item?.name} Removed From Cart Successfully`,
       });
       return newCartData;
     }

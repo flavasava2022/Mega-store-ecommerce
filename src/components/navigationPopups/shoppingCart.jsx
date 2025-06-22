@@ -54,20 +54,20 @@ function ShoppingCart() {
                     <div className="p-2 flex  items-center  justify-between gap-3  w-full">
                       <div className="w-[100px] h-[120px] ">
                         <img
-                          src={item?.attributes?.images.data[0].attributes.url}
-                          alt={item?.attributes?.name}
+                          src={item?.imageUrl}
+                          alt={item?.name}
                           className="w-[100%] h-[100%] object-cover"
                         />
                       </div>
                       <div className="w-[80%] flex flex-col h-[120px] gap-2 items-stretch justify-between">
                         <div className="flex items-start justify-between gap-2 ">
-                          <Link to={`../product/${item?.attributes.name}`}>
+                          <Link to={`../product/${item?.name}`}>
                             <p className="text-base  font-normal leading-5	">
                               {item?.attributes?.name}
                             </p>
                           </Link>
                           <p className="flex items-center border-2 border-dashed border-[#6895D2] rounded-lg min-w-fit font-medium p-2 text-[#6895D2] text-[12px] !leading-none ">
-                            $ {item?.attributes?.price}
+                            $ {item?.price}
                           </p>
                         </div>
                         <div className="flex items-center justify-center w-full gap-4">

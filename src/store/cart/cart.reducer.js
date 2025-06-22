@@ -30,7 +30,7 @@ export const cartSlice = createSlice({
       })
       .addCase(getCartData.rejected, (state, action) => {
         state.isLoadingCart = false;
-        state.errorFetchCart = action?.error?.message;
+        state.errorFetchCart = action?.error;
       })
       .addCase(addDataToCart.pending, (state, action) => {
         state.isLoadingEditProducts = true;
