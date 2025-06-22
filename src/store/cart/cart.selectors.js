@@ -13,7 +13,7 @@ export const isOpenDrawer = createSelector([selectCartReducer],(cart)=>cart.open
 
 
  export   const cartTotalPrice = createSelector([selectCartReducer],(cart)=>cart.cartData?.reduce(
-      (total, cartItem) => total + cartItem?.quantity * cartItem?.attributes?.price ,
+      (total, cartItem) => total + cartItem?.quantity * cartItem?.price ,
       0
     ))
    export const cartTotalCount = createSelector([selectCartReducer],(cart)=>cart.cartData?.reduce(

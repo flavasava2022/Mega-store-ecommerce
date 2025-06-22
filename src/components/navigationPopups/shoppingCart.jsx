@@ -17,7 +17,7 @@ import { MdOutlineShoppingCart } from "react-icons/md";
 function ShoppingCart() {
   const openDrawer = useSelector(isOpenDrawer);
   const cartData = useSelector(selectCartItems);
-  const totalPrice = useSelector(cartTotalPrice);
+  const totalPrice = useSelector(cartTotalPrice).toFixed(2);
   const totalCount = useSelector(cartTotalCount);
   const dispatch = useDispatch();
   const loadingAddToCartBTN = useSelector(loadingAddToCart);
@@ -62,8 +62,8 @@ function ShoppingCart() {
                       <div className="w-[80%] flex flex-col h-[120px] gap-2 items-stretch justify-between">
                         <div className="flex items-start justify-between gap-2 ">
                           <Link to={`../product/${item?.name}`}>
-                            <p className="text-base  font-normal leading-5	">
-                              {item?.attributes?.name}
+                            <p className="text-base  font-normal leading-5 overflow-hidden	">
+                              {item?.name}
                             </p>
                           </Link>
                           <p className="flex items-center border-2 border-dashed border-[#6895D2] rounded-lg min-w-fit font-medium p-2 text-[#6895D2] text-[12px] !leading-none ">

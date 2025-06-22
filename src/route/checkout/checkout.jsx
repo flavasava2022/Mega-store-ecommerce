@@ -12,7 +12,7 @@ import { useMediaQuery } from "react-responsive";
 
 function Checkout() {
   const cartData = useSelector(selectCartItems);
-  const cartTotal = useSelector(cartTotalPrice);
+  const cartTotal = useSelector(cartTotalPrice).toFixed(2);
   const loadingAddToCartBTN = useSelector(loadingAddToCart);
   const [tableData, setTableData] = useState([]);
   const isDesktopOrLaptop = useMediaQuery({
@@ -29,16 +29,16 @@ function Checkout() {
             Product: (
               <div className="flex items-center justify-between gap-4">
                 <img
-                  src={item?.attributes?.images?.data[0]?.attributes?.url}
+                  src={item?.imageUrl}
                   alt=""
                   className="w-[90px] h-[90px]   object-scale-down rounded-2xl"
                 />
-                <p className="text-start w-full">{item.attributes?.name}</p>
+                <p className="text-start w-full">{item?.name}</p>
               </div>
             ),
             Price: (
               <p className="flex items-center justify-center w-full">
-                $ {item.attributes?.price}
+                $ {item?.price}
               </p>
             ),
             Quantity: (
@@ -50,7 +50,7 @@ function Checkout() {
             ),
             Subtotal: (
               <p className="flex items-center justify-center w-full">
-                $ {item?.quantity * item.attributes?.price}
+                $ {item?.quantity * item?.price}
               </p>
             ),
           },
@@ -114,22 +114,22 @@ function Checkout() {
                     <div className="p-2 flex  items-center  justify-between gap-3  w-full">
                       <div className="w-[100px] h-[120px] ">
                         <img
-                          src={item?.attributes?.images.data[0].attributes.url}
-                          alt={item?.attributes?.name}
+                          src={item?.images.data[0].attributes.url}
+                          alt={item?.name}
                           className="w-[100%] h-[100%] object-cover"
                         />
                       </div>
                       <div className="w-[80%] flex flex-col h-[120px] gap-2 items-stretch justify-between">
                         <div className="flex items-start justify-between gap-2 ">
-                          <Link to={`../product/${item?.attributes.name}`}>
+                          <Link to={`../product/${item.name}`}>
                             <p className="text-base  font-normal leading-5	">
-                              {item?.attributes?.name}
+                              {item?.name}
                             </p>
                           </Link>
                         </div>
                         <div className="flex items-center justify-between w-full gap-2">
                           <p className="flex items-center border-2 border-dashed border-[#6895D2] rounded-lg min-w-fit font-medium p-2 text-[#6895D2] text-[12px] !leading-none ">
-                            $ {item?.attributes?.price}
+                            $ {item?.price}
                           </p>
                           <div className="flex items-center justify-center w-full">
                             <div className="w-[180px] mx-auto">
